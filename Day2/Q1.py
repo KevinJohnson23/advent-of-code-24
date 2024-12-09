@@ -1,28 +1,35 @@
-with open("input.txt") as file:
-    num_safe = 0
+from PerformanceTester.PerformanceTester import test_time
 
-    for line in file.readlines():
-        numbers = [int(n) for n in line.split(" ")]
+def main():
+    with open("input.txt") as file:
+        num_safe = 0
 
-        last_number = numbers[0]
-        ascending = None
-        safe = True
-        
-        for n in numbers[1:]:
-            n_larger = n > last_number
-            if ascending == None:
-                ascending = n_larger
-            else:
-                if ascending and not n_larger or n_larger and not ascending:
+        for line in file:
+            numbers = map(int, line.split())
+            last_number = None
+            ascending = None
+            safe = True
+
+            for n in numbers:
+                if last_number is None:
+                    last_number = n
+                    continue
+                n_larger = n > last_number
+                if ascending is None:
+                    ascending = n_larger
+                else:
+                    if ascending != n_larger:
+                        safe = False
+                        break
+                difference = abs(n - last_number)
+                if difference < 1 or difference > 3:
                     safe = False
                     break
-            difference = n - last_number if ascending else last_number - n
-            if difference < 1 or difference > 3:
-                safe = False
-                break
-            last_number = n
-            
-        if safe:
-            num_safe += 1
+                last_number = n
 
-    print(num_safe)
+            if safe:
+                num_safe += 1
+        print(num_safe)
+
+if __name__ == "__main__":
+    test_time(main)
