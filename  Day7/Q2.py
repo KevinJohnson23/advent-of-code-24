@@ -1,28 +1,34 @@
-from itertools import product
+from PerformanceTester.PerformanceTester import test_time
 
-op = ["*", "+", "||"]
+def calculate_next(current, numbers):
+    if len(numbers) == 1:
+        return current in numbers
 
-with open("input.txt") as file:
+    popped = numbers.pop()
+    if current % popped == 0:
+        if calculate_next(current // popped, numbers.copy()):
+            return True
+    if str(current).endswith(str(popped)) and current != popped:
+        if calculate_next(int(str(current)[:len(str(current))-len(str(popped))]), numbers.copy()):
+            return True
+    if current - popped > 0:
+        if calculate_next(current-popped, numbers.copy()):
+            return True
+
+def main():
     result = 0
 
-    for line in file.readlines():
-        numbers = [int(x) for x in line.replace(":", "").replace("\n", "").split(" ")]
-        expecting = numbers[0]
-        set_numbers = numbers[1:]
+    with open("input.txt") as file:
+        for line in file:
+            line_numbers = [int(x) for x in line.strip().replace(":", "").split(" ")]
 
-        operators = product(op, repeat=len(set_numbers)-1)
-    
-        for ops in operators:
-            curr = numbers[1]
-            for i, operator in enumerate(ops):
-                if operator == "*":
-                    curr *= set_numbers[i+1]
-                elif operator == "+":
-                    curr += set_numbers[i+1]
-                else:
-                    curr = int(str(curr)+str(set_numbers[i+1]))
-            if curr == expecting:
+            expecting = line_numbers[0]
+            values = line_numbers[1:]
+
+            if calculate_next(expecting, values):
                 result += expecting
-                break
-    
+
     print(result)
+
+if __name__ == "__main__":
+    test_time(main)
