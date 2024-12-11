@@ -12,34 +12,30 @@ def get_stones_after_blink(stones, num_blinks):
             if stones_copy[stone] == 0:
                 continue
             stones_count = stones_copy[stone]
+            stones[stone] -= stones_count
 
             if stone == 0:
-                insert_into_dict(stones, stones_count, 1)
-                stones[0] -= stones_count
-
+                stones[1] = stones.get(1, 0) + stones_count
             else:
                 stone_str = str(stone)
                 stone_len = len(stone_str)
                 if stone_len % 2 == 0:
-                    l, r = int(stone_str[:stone_len//2]), int(stone_str[stone_len//2:])
-                    insert_into_dict(stones, stones_count, l)
-                    insert_into_dict(stones, stones_count, r)
-                    stones[stone] -= stones_count
+                    half = stone_len // 2
+                    l, r = int(stone_str[:half]), int(stone_str[half:])
+                    stones[l] = stones.get(l, 0) + stones_count
+                    stones[r] = stones.get(r, 0) + stones_count
                 else:
-                    insert_into_dict(stones, stones_count, stone*2024)
-                    stones[stone] -= stones_count
+                    new_stone = stone * 2024
+                    stones[new_stone] = stones.get(stone * 2024, 0) + stones_count
     return stones
 
 def main():
-    stones = dict()
-    num_blinks = 25
+    stones = {}
+    num_blinks = 75
 
     with open("input.txt") as file:
-        for stone in file.read().strip().split(" "):
-            stone_int = int(stone)
-            if stone_int not in stones:
-                stones[stone_int] = 0
-            stones[stone_int] += 1
+        for stone in map(int, file.read().strip().split()):
+            stones[stone] = stones.get(stone, 1)
 
     print(sum(get_stones_after_blink(stones, num_blinks).values()))
 
