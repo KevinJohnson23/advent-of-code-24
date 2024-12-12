@@ -55,7 +55,6 @@ def get_loops(graph, start_x, start_y, w, h, index=0):
     return loops
 
 def main():
-    lines = None
     with open("input.txt") as file:
         lines = [list(line.strip()) for line in file]
     h = len(lines)
