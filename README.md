@@ -17,3 +17,4 @@ Day | Q1 | Q2
 10 | [12.03ms](Day10/Q1.py) | [10.14ms](Day10/Q2.py)
 11 | [5.55ms](Day11/Q1.py) | [186.90ms](Day11/Q2.py)
 12 | [59.38ms](Day12/Q1.py) | [56.55ms](Day12/Q2.py)
+13 | [1.30ms](Day13/Q1.py) | [1.45ms](Day13/Q2.py)
